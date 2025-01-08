@@ -18,6 +18,20 @@ public class MyStep extends ScenarioSteps {
     }
 
     @net.thucydides.core.annotations.Step
+    public void validarFaseTramitación() {
+        myPage.validarFaseTramitación();
+    }
+
+    @net.thucydides.core.annotations.Step
+    public void transitoALaFaseResolver() {
+        myPage.transitoALaFaseResolver();
+    }
+    @net.thucydides.core.annotations.Step
+    public void validarFaseResolver() {
+        myPage.validarFaseResolver();
+    }
+
+    @net.thucydides.core.annotations.Step
     public void generoUnDocumento() {
         myPage.generoUnDocumento();
     }
@@ -71,4 +85,6 @@ public class MyStep extends ScenarioSteps {
     public void validoLaAsignacionDelUsuario() {
         myPage.validoLaAsignacionDelUsuario();
     }
+
+
 }

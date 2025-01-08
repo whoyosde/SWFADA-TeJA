@@ -25,8 +25,8 @@ Característica: Tramitación de Expediente
     Dado presiono el botón Tramitar del expediente
     Cuando transito a la fase Estudiar expediente
     Y valido que me encuentro en la fase Estudiar expediente
-    Y transito a la fase Resolver
-    Entonces valido que me encuentro en la fase Resolver
+   Y transito a la fase Resolver
+   Entonces valido que me encuentro en la fase Resolver
     Y deshago la fase
     Y genero un documento
     Y termino un documento

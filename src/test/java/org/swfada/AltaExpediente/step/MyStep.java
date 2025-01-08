@@ -45,8 +45,8 @@ public class MyStep extends ScenarioSteps {
         myPage.pulsaElBotónContinuar();
     }
     @net.thucydides.core.annotations.Step
-    public void rellenarDatosDelFormulario() {
-        myPage.rellenarDatosDelFormulario();
+    public void rellenarDatosDelFormulario(String nif) {
+        myPage.rellenarDatosDelFormulario(nif);
     }
     @net.thucydides.core.annotations.Step
     public void pulsaElBotónGuardarYTerminar() {

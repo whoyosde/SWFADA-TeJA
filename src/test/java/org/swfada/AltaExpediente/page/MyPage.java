@@ -179,7 +179,7 @@ public class MyPage extends PageObject {
         getDriver().switchTo().defaultContent();
     }
 
-    public void rellenarDatosDelFormulario() {
+    public void rellenarDatosDelFormulario(String nif) {
         WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"frameModuloHome\"]/iframe"));
         getDriver().switchTo().frame(iframe);
         WebDriverWait wait = new WebDriverWait(getDriver(), 60);
@@ -196,7 +196,7 @@ public class MyPage extends PageObject {
         selectSexo.click();
         WebElement selectOptions = getDriver().findElement(By.xpath("//option[contains(text(),'Hombre')]"));
         clickOn(selectOptions);
-        campoNif.sendKeys("49343284G");
+        campoNif.sendKeys(nif);
 
         selectTipovia.click();
         WebElement selectOptions2 = getDriver().findElement(By.xpath("//option[contains(text(),'Acceso')]"));
@@ -227,12 +227,13 @@ public class MyPage extends PageObject {
 
     public void pulsaElBotónGuardarYTerminar() {
         btnGuardarTerminar.waitUntilClickable();
+        btnGuardarTerminar.click();
         getDriver().switchTo().defaultContent();
-        WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoModalUtilidadXXL\"]/iframe"));
-        getDriver().switchTo().frame(iframe);
-        btnCerrar.waitUntilClickable();
-        btnCerrar.click();
-        getDriver().switchTo().defaultContent();
+       // WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoModalUtilidadXXL\"]/iframe"));
+       // getDriver().switchTo().frame(iframe);
+       // btnCerrar.waitUntilClickable();
+      //  btnCerrar.click();
+       // getDriver().switchTo().defaultContent();
     }
 
     public void pulsaElBotónContinuarDeDatosEspecíficos() {

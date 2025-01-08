@@ -16,13 +16,15 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 public class MyPage extends PageObject {
 
     @FindBy(xpath = "//div[@id=\"pendienteTramitar\"]")
     private WebElementFacade btnExpPendiente;
 
     @FindBy(xpath = "//*[@id=\"btn-tramitar\"]")
-    private WebElementFacade btnTransitarFase;
+    private WebElementFacade btnTransitarFaseEstudio;
 
     @FindBy(xpath = "//*[@id=\"tr_documentos_expediente\"]/div/button")
     private WebElementFacade btnIncorporar;
@@ -114,6 +116,13 @@ public class MyPage extends PageObject {
     @FindBy(xpath = "//h4[@id=\"tituloModalUtilidadXL\"]/../button[@id=\"cerrarModalAcciones\"]")
     private WebElementFacade btnCerrarAsig;
 
+    @FindBy(xpath = "//button[contains(text(),'RESOLVER')]/i[@title=\"Ocultar\"]")
+    private WebElementFacade btnMostrarFase;
+
+    @FindBy(xpath = "(//button[@id=\"btn-tramitar\"])[5]")
+    private WebElementFacade btnTransitarFaseResolver;
+
+
 
     public void presionoElBotónTramitarDelExpediente() {
         WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"frameModuloHome\"]/iframe"));
@@ -123,32 +132,18 @@ public class MyPage extends PageObject {
         WebDriverWait wait = new WebDriverWait(getDriver(), 60);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//form[@id=\"filtroForm\"]")));
         btnExpPendiente.waitUntilClickable();
-        String estado = "Registro de Licitadores de Andalucía PRU";
-        // Encontrar todas las filas de la tabla
-        List<WebElement> filas = getDriver().findElements(By.tagName("tr"));
-        // Bandera para indicar si se encontró el elemento
-        boolean encontrado = false;
 
-        for (int i = 0; i < filas.size(); i++) {
-            WebElement fila = filas.get(i);
-            // Buscar el elemento en la fila por su texto
-            if (fila.getText().contains(estado)) {
+        WebElement fila = getDriver().findElement(By.xpath("(//tr[@class=\"odd\"])[1]"));
 
-                Actions actions = new Actions(getDriver());
-                actions.moveToElement(fila)
-                        .perform();
-                WebElement tramitar = getDriver().findElement(By.xpath("//div[@style=\"display: flex; align-items: center; justify-content: center; min-width: 105px; min-height: 80px;\"]/button"));
-                actions.moveToElement(tramitar)
-                        .perform();
-                tramitar.click();
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(fila)
+                .perform();
+        WebElement tramitar = getDriver().findElement(By.xpath("//div[@style=\"display: flex; align-items: center; justify-content: center; min-width: 105px; min-height: 80px;\"]/button"));
+        actions.moveToElement(tramitar)
+                .perform();
+        tramitar.click();
 
-                encontrado = true;
-                break;
-            }
-        }
-        if (!encontrado) {
-            System.out.println("No se encontró el elemento buscado.");
-        }
+
         getDriver().switchTo().defaultContent();
     }
 
@@ -160,13 +155,40 @@ public class MyPage extends PageObject {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id=\"documentos\"]")));
         getDriver().switchTo().defaultContent();
 
-        btnTransitarFase.waitUntilClickable();
+        btnTransitarFaseEstudio.waitUntilClickable();
         Actions action = new Actions(getDriver());
-        action.moveToElement(btnTransitarFase).click().perform();
-        btnTransitarFase.click();
-        //quitar al desbloquearprimera linea
-      //  WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        action.moveToElement(btnTransitarFaseEstudio).click().perform();
+        btnTransitarFaseEstudio.click();
+    }
+
+    public void validarFaseTramitación() {
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'TRAMITACIÓN')]")));
+        WebElement fase = getDriver().findElement(By.id("50"));
+        assertEquals("TRAMITACIÓN", fase.getText());
+    }
+
+    public void transitoALaFaseResolver() {
+        WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoPestana-50\"]/iframe"));
+        getDriver().switchTo().frame(iframe);
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id=\"documentos\"]")));
+        getDriver().switchTo().defaultContent();
+        btnMostrarFase.waitUntilClickable();
+        btnMostrarFase.click();
+        btnTransitarFaseResolver.waitUntilClickable();
+        Actions action = new Actions(getDriver());
+        action.moveToElement(btnTransitarFaseResolver).click().perform();
+        btnTransitarFaseResolver.click();
+    }
+
+
+    public void validarFaseResolver() {
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'GESTION RESOLUCION')]")));
+        WebElement fase = getDriver().findElement(By.id("35"));
+        assertEquals("GESTION RESOLUCION", fase.getText());
     }
 
     public void generoUnDocumento() {
@@ -220,7 +242,7 @@ public class MyPage extends PageObject {
     }
 
     public void envioElDocumentoAPortafirma() {
-       WebElement espera = getDriver().findElement(By.id("DIV_ESPERA_ESCRITORIO"));
+        WebElement espera = getDriver().findElement(By.id("DIV_ESPERA_ESCRITORIO"));
         // Esperar hasta que el elemento desaparezca
         WebDriverWait waits = new WebDriverWait(getDriver(), 60);
         waits.until(ExpectedConditions.invisibilityOf(espera));
@@ -251,8 +273,8 @@ public class MyPage extends PageObject {
     }
 
     public void adjuntarDocumento() {
-       // WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoPestana-50\"]/iframe"));
-       // getDriver().switchTo().frame(iframe);
+        // WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoPestana-50\"]/iframe"));
+        // getDriver().switchTo().frame(iframe);
         btnIncorporar.waitUntilClickable();
         btnIncorporar.click();
         getDriver().switchTo().defaultContent();
@@ -461,4 +483,5 @@ public class MyPage extends PageObject {
         }
 
     }
+
 }

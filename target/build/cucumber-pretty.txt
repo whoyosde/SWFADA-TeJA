@@ -1,3 +1,0 @@
-
-@AltaExpediente
-Esquema del escenario: Alta de Expediente                                                [90m# src/test/resources/Features/Alta Expediente.feature:41[0m

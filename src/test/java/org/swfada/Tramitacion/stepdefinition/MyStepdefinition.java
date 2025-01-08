@@ -22,6 +22,21 @@ public class MyStepdefinition {
         myStep.transitoALaFaseEstudiarExpediente();
     }
 
+    @Y("valido que me encuentro en la fase Estudiar expediente")
+    public void validoQueMeEncuentroEnLaFaseEstudiarExpediente() {
+        myStep.validarFaseTramitación();
+    }
+
+    @Y("transito a la fase Resolver")
+    public void transitoALaFaseResolver() {
+        myStep.transitoALaFaseResolver();
+    }
+
+    @Entonces("valido que me encuentro en la fase Resolver")
+    public void validoQueMeEncuentroEnLaFaseResolver() {
+        myStep.validarFaseResolver();
+    }
+
     @Y("genero un documento")
     public void generoUnDocumento() {
         myStep.generoUnDocumento();
@@ -76,4 +91,5 @@ public class MyStepdefinition {
     public void validoLaAsignacionDelUsuario() {
         myStep.validoLaAsignacionDelUsuario();
     }
+
 }
