@@ -32,8 +32,17 @@ public class MyStep extends ScenarioSteps {
     }
 
     @net.thucydides.core.annotations.Step
-    public void generoUnDocumento() {
-        myPage.generoUnDocumento();
+    public void deshacerFase() {
+        myPage.deshacerFase();
+    }
+
+    @net.thucydides.core.annotations.Step
+    public void generoUnDocumento(String documento) {
+        myPage.generoUnDocumento(documento);
+    }
+    @net.thucydides.core.annotations.Step
+    public void seleccionarFirmante(String firmante) {
+        myPage.seleccionarFirmante(firmante);
     }
 
     @net.thucydides.core.annotations.Step
@@ -44,6 +53,11 @@ public class MyStep extends ScenarioSteps {
     @net.thucydides.core.annotations.Step
     public void envioElDocumentoAPortafirma() {
         myPage.envioElDocumentoAPortafirma();
+    }
+
+    @net.thucydides.core.annotations.Step
+    public void validoEstadoPendienteDeFirma() {
+        myPage.validoEstadoPendienteDeFirma();
     }
 
     @net.thucydides.core.annotations.Step
@@ -86,5 +100,8 @@ public class MyStep extends ScenarioSteps {
         myPage.validoLaAsignacionDelUsuario();
     }
 
-
+    @net.thucydides.core.annotations.Step
+    public void desasignarUsuario(String usuario) {
+        myPage.desasignarUsuario(usuario);
+    }
 }

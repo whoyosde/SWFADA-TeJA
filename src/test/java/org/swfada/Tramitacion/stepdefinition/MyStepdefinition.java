@@ -37,9 +37,19 @@ public class MyStepdefinition {
         myStep.validarFaseResolver();
     }
 
-    @Y("genero un documento")
-    public void generoUnDocumento() {
-        myStep.generoUnDocumento();
+    @Y("deshago la fase")
+    public void deshagoLaFase() {
+        myStep.deshacerFase();
+    }
+
+    @Y("genero un documento {string}")
+    public void generoUnDocumento(String documento) {
+        myStep.generoUnDocumento(documento);
+    }
+
+    @Y("seleccionar firmante {string}")
+    public void seleccionarFirmante(String firmante) {
+        myStep.seleccionarFirmante(firmante);
     }
 
     @Y("termino un documento")
@@ -50,6 +60,11 @@ public class MyStepdefinition {
     @Y("envio el documento a portafirma")
     public void envioElDocumentoAPortafirma() {
         myStep.envioElDocumentoAPortafirma();
+    }
+
+    @Entonces("valido que se encuentra en pendiente de firma")
+    public void validoQueSeEncuentraEnPendienteDeFirma() {
+        myStep.validoEstadoPendienteDeFirma();
     }
 
     @Y("adjunto otra documentación")
@@ -92,4 +107,8 @@ public class MyStepdefinition {
         myStep.validoLaAsignacionDelUsuario();
     }
 
+    @Y("desasigno usuario {string}")
+    public void desasignoUsuario(String usuario) {
+        myStep.desasignarUsuario(usuario);
+    }
 }

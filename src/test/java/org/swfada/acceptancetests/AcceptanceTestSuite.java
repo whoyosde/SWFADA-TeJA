@@ -12,8 +12,8 @@ import org.junit.runner.RunWith;
         stepNotifications = true,
         features = "src/test/resources/Features",
         glue = "org.swfada",
-        tags = "@AltaExpediente or @Tramitación"
-       // tags = "@Tramitación"
+       // tags = "@AltaExpediente or @Tramitación"
+        tags = "@Tramitación"
 )
 public class AcceptanceTestSuite {
 }

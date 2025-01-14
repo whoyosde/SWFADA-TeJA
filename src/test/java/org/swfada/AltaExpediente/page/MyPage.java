@@ -228,6 +228,8 @@ public class MyPage extends PageObject {
     public void pulsaElBotónGuardarYTerminar() {
         btnGuardarTerminar.waitUntilClickable();
         btnGuardarTerminar.click();
+        WebElement mensaje = getDriver().findElement(By.xpath("//span[@class=\"alert alert-info\"]"));
+        assertEquals("El formulario se ha guardado con exito", mensaje.getText());
         getDriver().switchTo().defaultContent();
        // WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoModalUtilidadXXL\"]/iframe"));
        // getDriver().switchTo().frame(iframe);
@@ -273,7 +275,7 @@ public class MyPage extends PageObject {
         btnsubir.waitUntilClickable();
         btnsubir.click();
         WebDriverWait wait = new WebDriverWait(getDriver(), 30);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class=\"item-formulario\"])[2]")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class=\"item-formulario\"]//b[contains(text(),'DOC01.pdf')]")));
     }
 
     public void pulsaElBotónContinuarDeDocumentación() {

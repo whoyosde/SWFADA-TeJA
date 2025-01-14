@@ -29,9 +29,6 @@ public class MyPage extends PageObject {
     @FindBy(xpath = "//*[@id=\"tr_documentos_expediente\"]/div/button")
     private WebElementFacade btnIncorporar;
 
-    @FindBy(xpath = "//span[contains(text(),'GENERAR OFICIO DE ACUERDO DE INICIO DE EXPEDIENTE')]")
-    private WebElementFacade enlaceDocumento;
-
     @FindBy(xpath = "//a[contains(text(),'Firmantes')]")
     private WebElementFacade pestañaFirmantes;
 
@@ -122,6 +119,12 @@ public class MyPage extends PageObject {
     @FindBy(xpath = "(//button[@id=\"btn-tramitar\"])[5]")
     private WebElementFacade btnTransitarFaseResolver;
 
+    @FindBy(xpath = "//a[@id=\"botonDeshacer\"]")
+    private WebElementFacade btnDeshacerFase;
+
+    @FindBy(xpath = "//input[@name=\"pasoAnterior\"]")
+    private WebElementFacade btnDeshacer;
+
 
 
     public void presionoElBotónTramitarDelExpediente() {
@@ -184,14 +187,37 @@ public class MyPage extends PageObject {
 
 
     public void validarFaseResolver() {
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        WebElement espera = getDriver().findElement(By.id("DIV_ESPERA_ESCRITORIO"));
+        // Esperar hasta que el elemento desaparezca
+        WebDriverWait waits = new WebDriverWait(getDriver(), 30);
+        waits.until(ExpectedConditions.invisibilityOf(espera));
+        WebDriverWait wait = new WebDriverWait(getDriver(), 30);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'GESTION RESOLUCION')]")));
         WebElement fase = getDriver().findElement(By.id("35"));
         assertEquals("GESTION RESOLUCION", fase.getText());
     }
 
-    public void generoUnDocumento() {
+    public void deshacerFase() {
+        btnDeshacerFase.waitUntilClickable();
+        btnDeshacerFase.click();
+      //  Actions action = new Actions(getDriver());
+       // action.moveToElement(btnDeshacerFase).click().perform();
+        WebElement espera = getDriver().findElement(By.id("DIV_ESPERA_ESCRITORIO"));
+        // Esperar hasta que el elemento desaparezca
+        WebDriverWait waits = new WebDriverWait(getDriver(), 30);
+        waits.until(ExpectedConditions.invisibilityOf(espera));
+        WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoModalUtilidadL\"]/iframe"));
+        getDriver().switchTo().frame(iframe);
+        btnDeshacer.waitUntilClickable();
+        btnDeshacer.click();
+        getDriver().switchTo().defaultContent();
+        waits.until(ExpectedConditions.invisibilityOf(espera));
+        WebDriverWait wait = new WebDriverWait(getDriver(), 30);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'TRAMITACIÓN')]")));
+
+    }
+
+    public void generoUnDocumento(String documento) {
         WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoPestana-50\"]/iframe"));
         getDriver().switchTo().frame(iframe);
         btnIncorporar.waitUntilClickable();
@@ -204,9 +230,13 @@ public class MyPage extends PageObject {
         WebDriverWait wait = new WebDriverWait(getDriver(), 60);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id=\"tareasDocumentos\"]")));
         waitFor(3).second();
-        enlaceDocumento.click();
+        WebElement enlacedocumento = getDriver().findElement(By.xpath("//span[contains(text(),'"+documento+"')]"));
+        enlacedocumento.click();
         getDriver().switchTo().defaultContent();
 
+    }
+
+    public void seleccionarFirmante(String firmante) {
         WebElement espera = getDriver().findElement(By.id("DIV_ESPERA_ESCRITORIO"));
         // Esperar hasta que el elemento desaparezca
         WebDriverWait waits = new WebDriverWait(getDriver(), 60);
@@ -214,11 +244,12 @@ public class MyPage extends PageObject {
 
         WebElement iframe4 = getDriver().findElement(By.xpath("//div[@id=\"contenidoModalUtilidadXL\"]/iframe"));
         getDriver().switchTo().frame(iframe4);
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id=\"interesados\"]")));
         pestañaFirmantes.waitUntilClickable();
         pestañaFirmantes.click();
         campoFirmantes.click();
-        WebElement selectOptions = getDriver().findElement(By.xpath("//option[contains(text(),'David Recio Dominguez')]"));
+        WebElement selectOptions = getDriver().findElement(By.xpath("//option[contains(text(),'"+firmante+"')]"));
         clickOn(selectOptions);
         espacio.click();
         btnGenerar.click();
@@ -267,14 +298,20 @@ public class MyPage extends PageObject {
         pestañaDocumentos.waitUntilClickable();
         pestañaDocumentos.click();
         waits.until(ExpectedConditions.invisibilityOf(espera));
-        WebElement iframe3 = getDriver().findElement(By.xpath("//div[@id=\"contenidoPestana-50\"]/iframe"));
-        getDriver().switchTo().frame(iframe3);
+        }
+
+    public void validoEstadoPendienteDeFirma() {
+        WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoPestana-50\"]/iframe"));
+        getDriver().switchTo().frame(iframe);
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[contains(text(),'OFICIO DE ACUERDO DE INICIO DE EXPEDIENTE')]//../td[7]/span[contains(text(),'PENDIENTE DE FIRMA')]")));
+        WebElement estado = getDriver().findElement(By.xpath("//td[contains(text(),'OFICIO DE ACUERDO DE INICIO DE EXPEDIENTE')]//../td[7]/span"));
+        assertEquals("PENDIENTE DE FIRMA", estado.getText());
     }
 
     public void adjuntarDocumento() {
-        // WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoPestana-50\"]/iframe"));
-        // getDriver().switchTo().frame(iframe);
+      // WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoPestana-50\"]/iframe"));
+        //    getDriver().switchTo().frame(iframe);
         btnIncorporar.waitUntilClickable();
         btnIncorporar.click();
         getDriver().switchTo().defaultContent();
@@ -293,7 +330,10 @@ public class MyPage extends PageObject {
         enlaceOtraDoc.click();
         getDriver().switchTo().defaultContent();
 
-        waits.until(ExpectedConditions.invisibilityOf(espera));
+        WebElement espera2 = getDriver().findElement(By.id("DIV_ESPERA_ESCRITORIO"));
+        // Esperar hasta que el elemento desaparezca
+        WebDriverWait wait2 = new WebDriverWait(getDriver(), 60);
+        wait2.until(ExpectedConditions.invisibilityOf(espera));
         WebElement iframe4 = getDriver().findElement(By.xpath("//div[@id=\"contenidoModalUtilidadXL\"]/iframe"));
         getDriver().switchTo().frame(iframe4);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id=\"subirDocumento\"]")));
@@ -302,7 +342,7 @@ public class MyPage extends PageObject {
         String absolutePath = Paths.get(relativePath).toAbsolutePath().toString();
 
         // Localizar el elemento de entrada de archivo
-        WebElement fileInput = getDriver().findElement(By.id("file"));
+        WebElement fileInput = getDriver().findElement(By.id("fileselect"));
 
         // Adjuntar el archivo
         fileInput.sendKeys(absolutePath);
@@ -455,7 +495,7 @@ public class MyPage extends PageObject {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         WebElement element = getDriver().findElement(By.id("selectUsuarios"));
         js.executeScript("arguments[0].click();", element);
-        WebElement selectOptions = getDriver().findElement(By.xpath("//option[contains(text(),'Abraham Fernandez Eguren')]"));
+        WebElement selectOptions = getDriver().findElement(By.xpath("//option[contains(text(),'"+usuario+"')]"));
         clickOn(selectOptions);
 
         selectTipo.waitUntilClickable();
@@ -484,4 +524,24 @@ public class MyPage extends PageObject {
 
     }
 
+    public void desasignarUsuario(String usuario) {
+        btnAsignarUsuario.waitUntilClickable();
+        btnAsignarUsuario.click();
+        WebElement espera = getDriver().findElement(By.id("DIV_ESPERA_ESCRITORIO"));
+        // Esperar hasta que el elemento desaparezca
+        WebDriverWait waits = new WebDriverWait(getDriver(), 120);
+        waits.until(ExpectedConditions.invisibilityOf(espera));
+        WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoModalUtilidadXL\"]/iframe"));
+        getDriver().switchTo().frame(iframe);
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id=\"usuariosAsig\"]")));
+        WebElement iconoEliminar = getDriver().findElement(By.xpath("//td[contains(normalize-space(),'"+usuario+"')]/..//img[@title=\"Eliminar\"]"));
+        iconoEliminar.click();
+        waitFor(1).second();
+        Alert alert = getDriver().switchTo().alert();
+        alert.accept();
+        getDriver().switchTo().defaultContent();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(text(),'Operación realizada con éxito')]")));
+        btnCerrarAsig.click();
+    }
 }
