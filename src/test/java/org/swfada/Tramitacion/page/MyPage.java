@@ -2,22 +2,30 @@ package org.swfada.Tramitacion.page;
 
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.thucydides.core.annotations.DefaultUrl;
 import org.junit.Assert;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.*;
+import java.awt.*;
 import java.util.List;
+import java.util.Properties;
 
 public class MyPage extends PageObject {
-
     @FindBy(xpath = "//div[@id=\"pendienteTramitar\"]")
     private WebElementFacade btnExpPendiente;
 
@@ -114,6 +122,28 @@ public class MyPage extends PageObject {
     @FindBy(xpath = "//h4[@id=\"tituloModalUtilidadXL\"]/../button[@id=\"cerrarModalAcciones\"]")
     private WebElementFacade btnCerrarAsig;
 
+    @FindBy(xpath = "//td[contains(text(),'OFICIO DE ACUERDO DE INICIO DE EXPEDIENTE')]/../td[8]//a[2]")
+    private WebElementFacade opcionDescargar;
+
+    @FindBy(xpath = "//table[@id=\"documentos\"]/thead/tr/th[1]/input")
+    private WebElementFacade opcionSeleccionarTodosLosDocumentos;
+
+    @FindBy(xpath = "//a[contains(text(), 'Descargar documentos')]")
+    private WebElementFacade opcionDescargarTodosLosDocumentos;
+
+    @FindBy(xpath = "//td[contains(text(),'99999999R')]/../td[7]//button")
+    private WebElementFacade btnOpcionEditarInteresado;
+    @FindBy(xpath = "//td[contains(text(),'99999999R')]//..//a[1]")//"//td[7]//a[1]"
+    private WebElementFacade opcionEditarInteresado;
+
+    @FindBy(xpath = "//form[@id=\"formularioAltaInteresado\"]//button[@id=\"submitModificarInteresado\"]")
+    private WebElementFacade btnOpcionModificarInteresado;
+
+    @FindBy(xpath = "//ul[@id=\"myTab\"]/li[3]/a")
+    private WebElementFacade opcionEvento;
+
+    @FindBy(xpath = "//input[@id=\"iniciarEvento\"]")
+    private WebElementFacade btnIniciarEvento;
 
     public void presionoElBotónTramitarDelExpediente() {
         WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"frameModuloHome\"]/iframe"));
@@ -460,5 +490,123 @@ public class MyPage extends PageObject {
             Assert.fail("Usuario no asignado");
         }
 
+    }
+
+    public void descargoDocumentoGenerado() throws InterruptedException, AWTException {
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[contains(text(),'OFICIO DE ACUERDO DE INICIO DE EXPEDIENTE')]")));
+        btnopcion.waitUntilClickable();
+        btnopcion.click();
+        opcionDescargar.waitUntilClickable();
+        opcionDescargar.click();
+        getDriver().switchTo().defaultContent();
+
+        Robot robot = new Robot();
+        robot.delay(2000);
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_S);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyRelease(KeyEvent.VK_S);
+        Thread.sleep(4000);
+
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.delay(20);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+
+        Thread.sleep(5000);
+        String base = getDriver().getWindowHandle();
+        Set<String> set = getDriver().getWindowHandles();
+        set.remove(base);
+        assert set.size() == 1 : "verificar ventana nueva";
+
+        String newWindowHandle = set.iterator().next();
+        getDriver().switchTo().window(newWindowHandle);
+
+        getDriver().close(); // Cerrar ventana actual
+        getDriver().switchTo().window(base);
+
+    }
+
+    public void validoQueSeDescargoElDocumento()  throws IOException {
+
+        FileReader reader = new FileReader("serenity.properties");
+        Properties properties = new Properties();
+        properties.load(reader);
+        File dir = new File(properties.getProperty("pathFile"));
+        File[] files = dir.listFiles();
+        Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
+        if(files.length > 0) {
+            File archivoDescargado = files[0];
+            System.out.println("El archivo más reciente descargado es: " + archivoDescargado.getName());
+        } else {
+            System.out.println("No se descargaron archivos");
+        }
+    }
+
+    public void descargoTodosLosDocumentosDelExpediente() throws InterruptedException, AWTException {
+
+        WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoPestana-50\"]/iframe"));
+        getDriver().switchTo().frame(iframe);
+        opcionSeleccionarTodosLosDocumentos.waitUntilClickable();
+        opcionSeleccionarTodosLosDocumentos.click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id=\"documentos\"]/thead/tr/th[1]/input")));
+
+        opcionDescargarTodosLosDocumentos.waitUntilClickable();
+        opcionDescargarTodosLosDocumentos.click();
+        Robot robot = new Robot();
+        robot.delay(2000);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.delay(20);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+
+        getDriver().switchTo().defaultContent();
+    }
+
+    public void editoInteresado() {
+
+        btnOpcionEditarInteresado.waitUntilClickable();
+        btnOpcionEditarInteresado.click();
+        opcionEditarInteresado.waitUntilClickable();
+        opcionEditarInteresado.click();
+        getDriver().switchTo().defaultContent();
+        waitFor(15).second();
+        WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoModalUtilidadL\"]/iframe"));
+        getDriver().switchTo().frame(iframe);
+
+        btnOpcionModificarInteresado.waitUntilClickable();
+        btnOpcionModificarInteresado.click();
+        getDriver().switchTo().defaultContent();
+        WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(text(),'Operación realizada con éxito')]")));
+    }
+
+    public void iniciarEvento(String Evento) {
+        opcionEvento.waitUntilClickable();
+        opcionEvento.click();
+        waitFor(15).second();
+        WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoModalUtilidadM\"]/iframe"));
+        getDriver().switchTo().frame(iframe);
+        WebElement selectElement = getDriver().findElement(By.xpath("//select[@id=\"selectEventos\"]"));
+        selectElement.sendKeys(Evento);
+
+        btnIniciarEvento.waitUntilClickable();
+        btnIniciarEvento.click();
+        getDriver().switchTo().defaultContent();
+    }
+
+    public void validoQueSeIniciaElEvento() {
+        WebElement espera = getDriver().findElement(By.id("DIV_ESPERA_ESCRITORIO"));
+        // Esperar hasta que el elemento desaparezca
+        WebDriverWait waits = new WebDriverWait(getDriver(), 60);
+        waits.until(ExpectedConditions.invisibilityOf(espera));
+        WebElement evento = getDriver().findElement(By.xpath("//ul[@id=\"myTab\"]//a[contains(text(),'APORTACIÓN DE DOCUMENTACIÓN')]"));
+        if (evento.getText().contains("APORTACIÓN DE DOCUMENTACIÓN")) {
+            Assert.assertTrue(true);
+        } else {
+            Assert.fail("Evento no iniciado");
+        }
     }
 }
