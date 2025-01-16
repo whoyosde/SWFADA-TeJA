@@ -30,12 +30,12 @@ Característica: Alta de Expediente
     Y selecciono la unidad orgánica "<unidad orgánica>"
     Y selecciono la unidad orgánica creadora "<unidad creadora>"
     Y pulsa el botón Continuar
-    Y rellenar datos del formulario
+    Y rellenar datos del formulario "<nif formulario>"
     Y pulsa el botón guardar y terminar
     Y pulsa el botón Continuar de Datos específicos
     Y selecciono tipo de documento "<tipo documento>"
     Y adjunto documento
     Entonces pulsa el botón Continuar de Documentación
     Ejemplos:
-      | tipo expediente                      | procedimiento                            | título | fase                            | unidad orgánica                             | unidad creadora                             | tipo documento                    |
-      | Registro de Licitadores de Andalucía | Registro de Licitadores de Andalucía PRU | Prueba | INICIO DE PRESENTACION EN PAPEL | Consejería de Hacienda, Industria y Energía | Consejería de Hacienda, Industria y Energía| ANEXO I: SOLICITUD DE INSCRIPCIÓN |
+      | tipo expediente                      | procedimiento                            | título   | fase                            | unidad orgánica                             | unidad creadora                             | nif formulario | tipo documento                    |
+      | Registro de Licitadores de Andalucía | Registro de Licitadores de Andalucía PRU | PruebaQA | INICIO DE PRESENTACION EN PAPEL | Consejería de Hacienda, Industria y Energía | Consejería de Hacienda, Industria y Energía | 49343284G      | ANEXO I: SOLICITUD DE INSCRIPCIÓN |
