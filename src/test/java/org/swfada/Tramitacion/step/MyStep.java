@@ -3,6 +3,9 @@ package org.swfada.Tramitacion.step;
 import net.thucydides.core.steps.ScenarioSteps;
 import org.swfada.Tramitacion.page.MyPage;
 
+import java.awt.*;
+import java.io.IOException;
+
 public class MyStep extends ScenarioSteps {
     private MyPage myPage;
 
@@ -71,4 +74,22 @@ public class MyStep extends ScenarioSteps {
     public void validoLaAsignacionDelUsuario() {
         myPage.validoLaAsignacionDelUsuario();
     }
+
+    @net.thucydides.core.annotations.Step
+    public void descargoDocumentoGenerado() throws InterruptedException, AWTException { myPage.descargoDocumentoGenerado(); }
+
+    @net.thucydides.core.annotations.Step
+    public void validoQueSeDescargoElDocumento() throws IOException { myPage.validoQueSeDescargoElDocumento(); }
+
+    @net.thucydides.core.annotations.Step
+    public void descargoTodosLosDocumentosDelExpediente() throws InterruptedException, AWTException { myPage.descargoTodosLosDocumentosDelExpediente(); }
+
+    @net.thucydides.core.annotations.Step
+    public void validoQueSeDescargoTodosLosDocumentosDelExpediente() throws IOException { myPage.validoQueSeDescargoElDocumento(); }
+
+    public void editoInteresado() { myPage.editoInteresado(); }
+
+    public void iniciarEvento(String Evento) { myPage.iniciarEvento(Evento); }
+
+    public void validoQueSeIniciaElEvento() { myPage.validoQueSeIniciaElEvento(); }
 }
