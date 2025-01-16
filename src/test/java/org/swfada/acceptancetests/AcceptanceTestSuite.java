@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/Features",
         glue = "org.swfada",
        // tags = "@AltaExpediente or @Tramitación"
-        tags = "@Tramitación"
+        tags = "@AltaExpediente"
 )
 public class AcceptanceTestSuite {
 }

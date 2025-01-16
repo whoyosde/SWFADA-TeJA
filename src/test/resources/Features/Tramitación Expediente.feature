@@ -35,17 +35,17 @@ Característica: Tramitación de Expediente
     Entonces valido que se encuentra en pendiente de firma
     Y adjunto otra documentación
     Y elimino documento
-  #  Y descargo documento generado
-   # Entonces valido que se descargó el documento
-   # Y descargo todos los documentos del expediente
-   # Y valido que se descargó todos los documentos del expediente
-  #  Y accedo a Interesados
-   # Y asocio interesado al expediente "<Nif>"
-  #  Entonces valido que el interesado se añadió correctamente
-  #  Y edito interesado
-  #  Y elimino interesado del expediente
- #   Y iniciar Evento "<Evento>"
- #   Entonces valido que se inicia el evento
+    Y descargo documento generado
+    Entonces valido que se descargó el documento
+    Y descargo todos los documentos del expediente
+    Y valido que se descargó todos los documentos del expediente
+    Y accedo a Interesados
+    Y asocio interesado al expediente "<Nif>"
+    Entonces valido que el interesado se añadió correctamente
+    Y edito interesado
+    Y elimino interesado del expediente
+    Y iniciar Evento "<Evento>"
+    Entonces valido que se inicia el evento
     Y asigno usuario "<usuario>"
     Entonces valido la asignacion del usuario
     Y desasigno usuario "<usuario>"

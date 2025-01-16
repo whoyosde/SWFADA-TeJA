@@ -120,6 +120,7 @@ public class MyPage extends PageObject {
     @FindBy(xpath = "(//button[@id=\"submitAltaEspedifica\"])[2]")
     private WebElementFacade btnContinuarDoc;
 
+    private String nif;
 
     public void PulsarAltaExpediente() {
         WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"frameModuloHome\"]/iframe"));
@@ -222,25 +223,21 @@ public class MyPage extends PageObject {
         checkConsentimiento.click();
         campoLugar.sendKeys("Huelva");
         campoFdo.sendKeys("Walter");
+        this.nif=nif;
     }
 
 
     public void pulsaElBotónGuardarYTerminar() {
         btnGuardarTerminar.waitUntilClickable();
         btnGuardarTerminar.click();
-        WebElement mensaje = getDriver().findElement(By.xpath("//span[@class=\"alert alert-info\"]"));
-        assertEquals("El formulario se ha guardado con exito", mensaje.getText());
         getDriver().switchTo().defaultContent();
-       // WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"contenidoModalUtilidadXXL\"]/iframe"));
-       // getDriver().switchTo().frame(iframe);
-       // btnCerrar.waitUntilClickable();
-      //  btnCerrar.click();
-       // getDriver().switchTo().defaultContent();
+        WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"frameModuloHome\"]/iframe"));
+        getDriver().switchTo().frame(iframe);
+        WebElement mensaje = getDriver().findElement(By.xpath("//span[@class=\"identificadorInteresado\"]"));
+        assertEquals(nif, mensaje.getText());
     }
 
     public void pulsaElBotónContinuarDeDatosEspecíficos() {
-        WebElement iframe = getDriver().findElement(By.xpath("//div[@id=\"frameModuloHome\"]/iframe"));
-        getDriver().switchTo().frame(iframe);
         WebDriverWait wait = new WebDriverWait(getDriver(), 60);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("editar")));
         btnContinuarEspe.waitUntilClickable();
