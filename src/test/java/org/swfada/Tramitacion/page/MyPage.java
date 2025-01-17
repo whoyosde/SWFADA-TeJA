@@ -14,6 +14,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,6 +28,8 @@ import java.util.List;
 import java.util.Properties;
 
 public class MyPage extends PageObject {
+
+    String relativePath = "src/test/resources/Download/";
     @FindBy(xpath = "//div[@id=\"pendienteTramitar\"]")
     private WebElementFacade btnExpPendiente;
 
@@ -496,6 +500,7 @@ public class MyPage extends PageObject {
 
         WebDriverWait wait = new WebDriverWait(getDriver(), 60);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[contains(text(),'OFICIO DE ACUERDO DE INICIO DE EXPEDIENTE')]")));
+
         btnopcion.waitUntilClickable();
         btnopcion.click();
         opcionDescargar.waitUntilClickable();
@@ -510,9 +515,27 @@ public class MyPage extends PageObject {
         robot.keyRelease(KeyEvent.VK_S);
         Thread.sleep(4000);
 
+        String absolutePath = Paths.get(relativePath + "documento.pdf").toAbsolutePath().toString();
+        StringSelection stringSelection = new StringSelection(absolutePath);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, stringSelection);
+
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        Thread.sleep(4000);
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.delay(20);
         robot.keyRelease(KeyEvent.VK_ENTER);
+
+        if (!absolutePath.isEmpty()) {
+            robot.keyPress(KeyEvent.VK_TAB);
+            robot.keyRelease(KeyEvent.VK_TAB);
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.delay(20);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+        }
 
         Thread.sleep(5000);
         String base = getDriver().getWindowHandle();
@@ -530,10 +553,7 @@ public class MyPage extends PageObject {
 
     public void validoQueSeDescargoElDocumento()  throws IOException {
 
-        FileReader reader = new FileReader("serenity.properties");
-        Properties properties = new Properties();
-        properties.load(reader);
-        File dir = new File(properties.getProperty("pathFile"));
+        File dir = new File(relativePath);
         File[] files = dir.listFiles();
         Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
         if(files.length > 0) {
@@ -556,11 +576,30 @@ public class MyPage extends PageObject {
 
         opcionDescargarTodosLosDocumentos.waitUntilClickable();
         opcionDescargarTodosLosDocumentos.click();
+
         Robot robot = new Robot();
-        robot.delay(2000);
+        Thread.sleep(4000);
+        String absolutePath = Paths.get(relativePath+"documentos.zip").toAbsolutePath().toString();
+        StringSelection stringSelection = new StringSelection(absolutePath);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, stringSelection);
+
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        Thread.sleep(4000);
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.delay(20);
         robot.keyRelease(KeyEvent.VK_ENTER);
+
+        if (!absolutePath.isEmpty()) {
+            robot.keyPress(KeyEvent.VK_TAB);
+            robot.keyRelease(KeyEvent.VK_TAB);
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.delay(20);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+        }
 
         getDriver().switchTo().defaultContent();
     }

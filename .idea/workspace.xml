@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0dc538e7-bcfa-4b17-b677-33dab79f4b60" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/serenity.properties" beforeDir="false" afterPath="$PROJECT_DIR$/serenity.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/swfada/AccesoInformA/acceptancetests/AcceptanceTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/swfada/acceptancetests/AcceptanceTestSuite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/swfada/AccesoInformA/acceptancetests/AcceptanceTestSuite.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/swfada/Tramitacion/page/MyPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/swfada/Tramitacion/page/MyPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/swfada/Tramitacion/step/MyStep.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/swfada/Tramitacion/step/MyStep.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/swfada/Tramitacion/stepdefinition/MyStepdefinition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/swfada/Tramitacion/stepdefinition/MyStepdefinition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/Features/Tramitación Expediente.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/Features/Tramitación Expediente.feature" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
