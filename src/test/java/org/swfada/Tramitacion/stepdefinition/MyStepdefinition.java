@@ -7,6 +7,9 @@ import io.cucumber.java.es.Y;
 import net.thucydides.core.annotations.Steps;
 import org.swfada.Tramitacion.step.MyStep;
 
+import java.awt.*;
+import java.io.IOException;
+
 public class MyStepdefinition {
     @Steps
     private MyStep myStep;
@@ -107,8 +110,30 @@ public class MyStepdefinition {
         myStep.validoLaAsignacionDelUsuario();
     }
 
+    @Y("descargo documento generado")
+    public void descargoDocumentoGenerado() throws InterruptedException, AWTException { myStep.descargoDocumentoGenerado(); }
+
+    @Entonces("valido que se descargó el documento")
+    public void validoQueSeDescargoElDocumento() throws IOException  { myStep.validoQueSeDescargoElDocumento(); }
+
+    @Y("descargo todos los documentos del expediente")
+    public void descargoTodosLosDocumentosDelExpediente() throws InterruptedException, AWTException { myStep.descargoTodosLosDocumentosDelExpediente(); }
+
+    @Y("valido que se descargó todos los documentos del expediente")
+    public void validoQueSeDescargoTodosLosDocumentosDelExpediente() throws IOException { myStep.validoQueSeDescargoTodosLosDocumentosDelExpediente(); }
+
+    @Y("edito interesado")
+    public void editoInteresado() { myStep.editoInteresado(); }
+
+    @Y("iniciar Evento {string}")
+    public void iniciarEvento(String Evento) { myStep.iniciarEvento(Evento); }
+
+    @Entonces("valido que se inicia el evento")
+    public void validoQueSeIniciaElEvento() { myStep.validoQueSeIniciaElEvento(); }
+
     @Y("desasigno usuario {string}")
     public void desasignoUsuario(String usuario) {
         myStep.desasignarUsuario(usuario);
     }
+
 }
