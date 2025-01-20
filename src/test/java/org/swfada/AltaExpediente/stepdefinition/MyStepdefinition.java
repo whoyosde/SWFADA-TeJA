@@ -59,9 +59,9 @@ public class MyStepdefinition {
         myStep.pulsaElBotónContinuar();
     }
 
-    @Y("rellenar datos del formulario")
-    public void rellenarDatosDelFormulario() {
-        myStep.rellenarDatosDelFormulario();
+    @Y("rellenar datos del formulario {string}")
+    public void rellenarDatosDelFormulario(String nif) {
+        myStep.rellenarDatosDelFormulario(nif);
 
     }
 

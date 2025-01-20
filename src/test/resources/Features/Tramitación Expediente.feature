@@ -28,7 +28,8 @@ Característica: Tramitación de Expediente
     Y transito a la fase Resolver
     Entonces valido que me encuentro en la fase Resolver
     Y deshago la fase
-    Y genero un documento
+    Y genero un documento "<Documento>"
+    Y seleccionar firmante "<Firmante>"
     Y termino un documento
     Y envio el documento a portafirma
     Entonces valido que se encuentra en pendiente de firma
@@ -50,5 +51,5 @@ Característica: Tramitación de Expediente
     Y desasigno usuario "<usuario>"
 
     Ejemplos:
-      | Nif       | usuario             | Evento                      |
-      | 99999999R | ADRIAN JIMENEZ VIVA | Aportación de Documentación |
+      | Documento                                         | Firmante              | Nif       | usuario                  | Evento                      |
+      | GENERAR OFICIO DE ACUERDO DE INICIO DE EXPEDIENTE | David Recio Dominguez | 99999999R | Abraham Fernandez Eguren | Aportación de Documentación |
